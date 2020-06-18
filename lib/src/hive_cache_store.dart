@@ -38,12 +38,15 @@ class HiveCacheStore extends CacheStore {
             cleanupRunMinInterval: cleanupRunMinInterval);
 
   factory HiveCacheStore.createCacheStore(int maxSize, Duration maxAge,
-      {String storeKey = DefaultCacheManager.key, Box box}) {
+      {String storeKey = DefaultCacheManager.key,
+      Box box,
+      Duration cleanupRunMinInterval = const Duration(seconds: 10)}) {
     if (kIsWeb) {
-      return _createStoreForWeb(maxSize, maxAge, storeKey, box);
+      return _createStoreForWeb(maxSize, maxAge, storeKey, box,
+          cleanupRunMinInterval: cleanupRunMinInterval);
     }
     return HiveCacheStore._(_createFileDir(storeKey), storeKey, maxSize, maxAge,
-        box: box);
+        box: box, cleanupRunMinInterval: cleanupRunMinInterval);
   }
 
   static Future<f.Directory> _createFileDir(String storeKey) async {
@@ -59,10 +62,12 @@ class HiveCacheStore extends CacheStore {
   }
 
   static HiveCacheStore _createStoreForWeb(
-      int maxSize, Duration maxAge, String storeKey, Box box) {
+      int maxSize, Duration maxAge, String storeKey, Box box,
+      {Duration cleanupRunMinInterval = const Duration(seconds: 10)}) {
     if (!kIsWeb) return null;
     var memDir = MemoryFileSystem().systemTempDirectory.createTemp('cache');
 
-    return HiveCacheStore._(memDir, storeKey, maxSize, maxAge, box: box);
+    return HiveCacheStore._(memDir, storeKey, maxSize, maxAge,
+        box: box, cleanupRunMinInterval: cleanupRunMinInterval);
   }
 }
