@@ -2,7 +2,9 @@
 
 [![pub package](https://img.shields.io/pub/v/flutter_cache_manager_hive.svg)](https://pub.dartlang.org/packages/flutter_cache_manager_hive)
 
-Just like [flutter_cache_manager](https://pub.dartlang.org/packages/flutter_cache_manager_hive) but uses hive instead of sqlite to store cache object information.
+Just like [flutter_cache_manager](https://pub.dartlang.org/packages/flutter_cache_manager_hive) but uses [hive](https://github.com/hivedb/hive) instead of sqlite to store cache object information.
+
+**EXPERIMENTAL**
 
 ## Usage
 
@@ -17,7 +19,7 @@ CachedNetworkImage(
 )
 ```
 
-However, if you're handling hive initalization, you should pass register `CacheObjectAdapter` and pass open box to the `HiveCacheManager`:
+However, if you're handling hive initalization, you should register `CacheObjectAdapter` manually and pass an open box to the `HiveCacheManager`:
 
 ```dart
 /// register with the number of your choice
