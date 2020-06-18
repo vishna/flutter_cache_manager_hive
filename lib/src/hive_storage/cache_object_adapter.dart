@@ -22,11 +22,11 @@ class CacheObjectAdapter extends TypeAdapter<HiveCacheObject> {
 
   @override
   void write(BinaryWriter writer, HiveCacheObject obj) {
-    writer.writeString(obj.url);
-    writer.writeString(obj.key);
-    writer.writeString(obj.relativePath);
-    writer.writeInt(obj.validTillMs ?? 0);
-    writer.writeInt(clock.now().millisecondsSinceEpoch);
-    writer.writeString(obj.eTag);
+    writer.write(obj.url);
+    writer.write(obj.key);
+    writer.write(obj.relativePath);
+    writer.write(obj.validTillMs ?? 0);
+    writer.write(clock.now().millisecondsSinceEpoch);
+    writer.write(obj.eTag);
   }
 }

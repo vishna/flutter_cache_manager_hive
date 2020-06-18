@@ -69,6 +69,10 @@ class HiveCacheObjectProvider implements HiveCacheInfoRepository {
   @override
   Future deleteAll(Iterable<int> ids) async {
     unawaited(box.deleteAll(ids.map((id) => id.toString()).toList()));
+
+    if (ids.isNotEmpty)  {
+      unawaited(box.compact());
+    }
   }
 
   @override
