@@ -1,3 +1,7 @@
+## [0.0.5]
+
+* BoxOpener
+
 ## [0.0.4]
 
 * remove hive_flutter depedency

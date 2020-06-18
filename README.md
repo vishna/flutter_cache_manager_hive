@@ -14,14 +14,14 @@ You should register `CacheObjectAdapter` during hive initalization and pass an o
 /// register with the number of your choice (or default)
 Hive.registerAdapter(CacheObjectAdapter(typeId: 42))
 
-/// open box where the cache information will be stored
-final box = await Hive.openBox('image_cache_info.hive');
+/// provide box opener
+final boxOpener = () async => await Hive.openBox('image_cache_info.hive');
 
 /// finally whenever you are using cached network image library:
 CachedNetworkImage(
    imageUrl: "http://via.placeholder.com/350x150",
    placeholder: (context, url) => CircularProgressIndicator(),
    errorWidget: (context, url, error) => Icon(Icons.error),
-   cacheManager: HiveCacheManager(box: box) // this is a singleton factory
+   cacheManager: HiveCacheManager(boxOpener: boxOpener) // this is a singleton factory
 )
 ```

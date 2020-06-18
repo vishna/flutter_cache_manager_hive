@@ -6,6 +6,8 @@ import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+typedef BoxOpener = Future<Box> Function();
+
 class HiveCacheManager extends BaseCacheManager {
   static const key = 'libCachedImageDataHive';
 
@@ -14,9 +16,9 @@ class HiveCacheManager extends BaseCacheManager {
   factory HiveCacheManager(
       {int maxSize = 200,
       Duration maxAge = const Duration(days: 30),
-      @required Box box}) {
+      @required BoxOpener boxOpener}) {
     _instance ??= HiveCacheManager._(
-        HiveCacheStore.createCacheStore(maxSize, maxAge, box: box));
+        HiveCacheStore.createCacheStore(maxSize, maxAge, boxOpener: boxOpener));
     return _instance;
   }
 

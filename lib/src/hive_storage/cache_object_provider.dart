@@ -6,12 +6,15 @@ import 'package:hive/hive.dart';
 import 'package:pedantic/pedantic.dart';
 
 class HiveCacheObjectProvider implements HiveCacheInfoRepository {
-  Box box;
+  Future<Box> Function() boxOpener;
+  Box _box;
 
-  HiveCacheObjectProvider(this.box);
+  HiveCacheObjectProvider(this.boxOpener);
 
   @override
-  Future open() async {}
+  Future open() async {
+    _box = await boxOpener();
+  }
 
   @override
   Future<dynamic> updateOrInsert(CacheObject cacheObject) async {
@@ -31,38 +34,34 @@ class HiveCacheObjectProvider implements HiveCacheInfoRepository {
           touchedMs: clock.now().millisecondsSinceEpoch,
           eTag: cacheObject.eTag);
     }
-    unawaited(box.put(_hiveKey(hiveCacheObject.key), hiveCacheObject));
+    unawaited(_box.put(_hiveKey(hiveCacheObject.key), hiveCacheObject));
     return cacheObject;
   }
 
   @override
   Future<CacheObject> get(String key) async {
-    return box.get(_hiveKey(key)) as CacheObject;
+    return _box.get(_hiveKey(key)) as CacheObject;
   }
 
   @override
   Future<void> deleteByKey(String key) async {
-    unawaited(box.delete(_hiveKey(key)));
+    unawaited(_box.delete(_hiveKey(key)));
   }
 
   @override
   Future<int> delete(int id) async {
-    unawaited(box.delete(id.toString()));
+    unawaited(_box.delete(id.toString()));
     return 1;
   }
 
   @override
   Future<void> deleteAllByKeys(Iterable<String> keys) async {
-    unawaited(box.deleteAll(keys.map(_hiveKey).toList()));
+    unawaited(_box.deleteAll(keys.map(_hiveKey).toList()));
   }
 
   @override
   Future deleteAll(Iterable<int> ids) async {
-    unawaited(box.deleteAll(ids.map((id) => id.toString()).toList()));
-
-    if (ids.isNotEmpty) {
-      unawaited(box.compact());
-    }
+    unawaited(_box.deleteAll(ids.map((id) => id.toString()).toList()));
   }
 
   @override
@@ -73,7 +72,7 @@ class HiveCacheObjectProvider implements HiveCacheInfoRepository {
 
   @override
   Future<List<CacheObject>> getAllObjects() async {
-    return box.values.toList().cast<CacheObject>();
+    return _box.values.toList().cast<CacheObject>();
   }
 
   @override
@@ -111,7 +110,8 @@ class HiveCacheObjectProvider implements HiveCacheInfoRepository {
 
   @override
   Future close() async {
-    // no box closing needed
+    await _box.compact();
+    await _box.close();
   }
 }
 
