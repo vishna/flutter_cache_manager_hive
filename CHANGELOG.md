@@ -1,3 +1,7 @@
+## [0.0.6]
+
+* Try different approach with serialization (related hive issues 192 & 240)
+
 ## [0.0.5]
 
 * BoxOpener
