@@ -5,23 +5,13 @@ import 'package:flutter_cache_manager/src/storage/cache_object.dart';
 import 'package:hive/hive.dart';
 import 'package:pedantic/pedantic.dart';
 
-final _boxes = <String, Box>{};
-
 class HiveCacheObjectProvider implements HiveCacheInfoRepository {
   Box box;
-  String boxName;
 
-  HiveCacheObjectProvider(this.boxName, {this.box});
+  HiveCacheObjectProvider(this.box);
 
   @override
-  Future open() async {
-    if (box == null) {
-      var _box = _boxes[boxName];
-      _box ??= await Hive.openBox(boxName);
-      _boxes[boxName] = _box;
-      box = _box;
-    }
-  }
+  Future open() async {}
 
   @override
   Future<dynamic> updateOrInsert(CacheObject cacheObject) async {
@@ -70,7 +60,7 @@ class HiveCacheObjectProvider implements HiveCacheInfoRepository {
   Future deleteAll(Iterable<int> ids) async {
     unawaited(box.deleteAll(ids.map((id) => id.toString()).toList()));
 
-    if (ids.isNotEmpty)  {
+    if (ids.isNotEmpty) {
       unawaited(box.compact());
     }
   }

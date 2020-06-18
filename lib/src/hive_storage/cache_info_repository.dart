@@ -9,5 +9,3 @@ abstract class HiveCacheInfoRepository extends CacheInfoRepository {
   /// Deletes items with [keys] from the repository
   Future<void> deleteAllByKeys(Iterable<String> keys);
 }
-
-

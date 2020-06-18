@@ -8,21 +8,10 @@ Just like [flutter_cache_manager](https://pub.dartlang.org/packages/flutter_cach
 
 ## Usage
 
-If you don't use hive anywhere in your app and don't care about registered type adapters, simply do the following:
+You should register `CacheObjectAdapter` during hive initalization and pass an open box to the `HiveCacheManager` where you want your cache info stored.
 
 ```dart
-CachedNetworkImage(
-   imageUrl: "http://via.placeholder.com/350x150",
-   placeholder: (context, url) => CircularProgressIndicator(),
-   errorWidget: (context, url, error) => Icon(Icons.error),
-   cacheManager: HiveCacheManager() // this is a singleton factory
-)
-```
-
-However, if you're handling hive initalization, you should register `CacheObjectAdapter` manually and pass an open box to the `HiveCacheManager`:
-
-```dart
-/// register with the number of your choice
+/// register with the number of your choice (or default)
 Hive.registerAdapter(CacheObjectAdapter(typeId: 42))
 
 /// open box where the cache information will be stored

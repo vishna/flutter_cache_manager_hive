@@ -8,23 +8,13 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_cache_manager/src/cache_store.dart';
 import 'package:flutter_cache_manager/src/storage/cache_info_repository.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import 'hive_storage/cache_object_adapter.dart';
 import 'hive_storage/cache_object_provider.dart';
 
-bool _hiveInitalized = false;
-Future<CacheInfoRepository> _hiveCacheInfoRepository(
-    String key, Box box) async {
-  if (!_hiveInitalized && box == null) {
-    _hiveInitalized = true;
-    await Hive.initFlutter();
-    Hive.registerAdapter(CacheObjectAdapter());
-  }
-
-  final provider = HiveCacheObjectProvider('$key.hive', box: box);
+Future<CacheInfoRepository> _hiveCacheInfoRepository(Box box) async {
+  final provider = HiveCacheObjectProvider(box);
   await provider.open();
   return provider;
 }
@@ -34,12 +24,12 @@ class HiveCacheStore extends CacheStore {
       Duration maxAge,
       {Box box, Duration cleanupRunMinInterval = const Duration(seconds: 10)})
       : super(basedir, storeKey, capacity, maxAge,
-            cacheRepoProvider: _hiveCacheInfoRepository(storeKey, box),
+            cacheRepoProvider: _hiveCacheInfoRepository(box),
             cleanupRunMinInterval: cleanupRunMinInterval);
 
   factory HiveCacheStore.createCacheStore(int maxSize, Duration maxAge,
       {String storeKey = DefaultCacheManager.key,
-      Box box,
+      @required Box box,
       Duration cleanupRunMinInterval = const Duration(seconds: 10)}) {
     if (kIsWeb) {
       return _createStoreForWeb(maxSize, maxAge, storeKey, box,

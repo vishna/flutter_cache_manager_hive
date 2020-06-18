@@ -1,3 +1,7 @@
+## [0.0.4]
+
+* remove hive_flutter depedency
+
 ## [0.0.3]
 
 * expose `cleanupRunMinInterval`
