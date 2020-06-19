@@ -1,3 +1,7 @@
+## [0.0.7]
+
+* Remove `HiveCacheInfoRepository` - it was redundant.
+
 ## [0.0.6]
 
 * Try different approach with serialization (related hive issues 192 & 240)

@@ -1,11 +1,11 @@
 import 'package:clock/clock.dart';
-import 'package:flutter_cache_manager_hive/src/hive_storage/cache_info_repository.dart';
 import 'package:flutter_cache_manager_hive/src/hive_storage/cache_object.dart';
+import 'package:flutter_cache_manager/src/storage/cache_info_repository.dart';
 import 'package:flutter_cache_manager/src/storage/cache_object.dart';
 import 'package:hive/hive.dart';
 import 'package:pedantic/pedantic.dart';
 
-class HiveCacheObjectProvider implements HiveCacheInfoRepository {
+class HiveCacheObjectProvider implements CacheInfoRepository {
   Future<Box> Function() boxOpener;
   Box _box;
 
@@ -44,19 +44,9 @@ class HiveCacheObjectProvider implements HiveCacheInfoRepository {
   }
 
   @override
-  Future<void> deleteByKey(String key) async {
-    unawaited(_box.delete(_hiveKey(key)));
-  }
-
-  @override
   Future<int> delete(int id) async {
     unawaited(_box.delete(id.toString()));
     return 1;
-  }
-
-  @override
-  Future<void> deleteAllByKeys(Iterable<String> keys) async {
-    unawaited(_box.deleteAll(keys.map(_hiveKey).toList()));
   }
 
   @override

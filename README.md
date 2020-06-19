@@ -2,13 +2,13 @@
 
 [![pub package](https://img.shields.io/pub/v/flutter_cache_manager_hive.svg)](https://pub.dartlang.org/packages/flutter_cache_manager_hive)
 
-Just like [flutter_cache_manager](https://pub.dartlang.org/packages/flutter_cache_manager_hive) but uses [hive](https://github.com/hivedb/hive) instead of sqlite to store cache object information.
+Just like [flutter_cache_manager](https://pub.dartlang.org/packages/flutter_cache_manager) but uses [hive](https://github.com/hivedb/hive) instead of sqlite to store cache object information.
 
 **EXPERIMENTAL**
 
 ## Usage
 
-You should register `CacheObjectAdapter` during hive initalization and pass an open box to the `HiveCacheManager` where you want your cache info stored.
+You should register `CacheObjectAdapter` during hive initalization and pass a box opener to the `HiveCacheManager` - this box will be where cache information will be stored.
 
 ```dart
 /// register with the number of your choice (or default)
