@@ -1,3 +1,9 @@
+## [0.0.8]
+
+* Drop `HiveCacheStore`
+* Flatten directory structure
+* Expect `Future<Box>` as parameter instead of BoxOpener
+
 ## [0.0.7]
 
 * Remove `HiveCacheInfoRepository` - it was redundant.

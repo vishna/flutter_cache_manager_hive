@@ -1,5 +1,6 @@
-import 'package:flutter_cache_manager_hive/src/hive_storage/cache_object.dart';
 import 'package:hive/hive.dart';
+
+import 'hive_cache_object.dart';
 
 class CacheObjectAdapter extends TypeAdapter<HiveCacheObject> {
   CacheObjectAdapter({int typeId = TYPE_ID}) : _typeId = typeId;

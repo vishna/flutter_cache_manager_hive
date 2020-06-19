@@ -8,20 +8,20 @@ Just like [flutter_cache_manager](https://pub.dartlang.org/packages/flutter_cach
 
 ## Usage
 
-You should register `CacheObjectAdapter` during hive initalization and pass a box opener to the `HiveCacheManager` - this box will be where cache information will be stored.
+You should register `CacheObjectAdapter` during hive initalization and pass a box to the `HiveCacheManager` - this box will be where cache information will be stored.
 
 ```dart
 /// register with the number of your choice (or default)
 Hive.registerAdapter(CacheObjectAdapter(typeId: 42))
 
-/// provide box opener
-final boxOpener = () async => await Hive.openBox('image_cache_info.hive');
+/// provide the caching box
+final box = Hive.openBox('image_cache_info.hive');
 
 /// finally whenever you are using cached network image library:
 CachedNetworkImage(
    imageUrl: "http://via.placeholder.com/350x150",
    placeholder: (context, url) => CircularProgressIndicator(),
    errorWidget: (context, url, error) => Icon(Icons.error),
-   cacheManager: HiveCacheManager(boxOpener: boxOpener) // this is a singleton factory
+   cacheManager: HiveCacheManager(box: box) // this is a singleton factory
 )
 ```

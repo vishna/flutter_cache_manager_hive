@@ -1,19 +1,20 @@
 import 'package:clock/clock.dart';
-import 'package:flutter_cache_manager_hive/src/hive_storage/cache_object.dart';
 import 'package:flutter_cache_manager/src/storage/cache_info_repository.dart';
 import 'package:flutter_cache_manager/src/storage/cache_object.dart';
 import 'package:hive/hive.dart';
 import 'package:pedantic/pedantic.dart';
 
+import 'hive_cache_object.dart';
+
 class HiveCacheObjectProvider implements CacheInfoRepository {
-  Future<Box> Function() boxOpener;
+  Future<Box> box;
   Box _box;
 
-  HiveCacheObjectProvider(this.boxOpener);
+  HiveCacheObjectProvider(this.box);
 
   @override
   Future open() async {
-    _box = await boxOpener();
+    _box = await box;
   }
 
   @override
@@ -100,8 +101,7 @@ class HiveCacheObjectProvider implements CacheInfoRepository {
 
   @override
   Future close() async {
-    await _box.compact();
-    await _box.close();
+    // this is never called
   }
 }
 
