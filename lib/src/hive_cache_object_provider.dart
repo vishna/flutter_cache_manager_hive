@@ -35,13 +35,13 @@ class HiveCacheObjectProvider implements CacheInfoRepository {
           touchedMs: clock.now().millisecondsSinceEpoch,
           eTag: cacheObject.eTag);
     }
-    unawaited(_box.put(_hiveKey(hiveCacheObject.key), hiveCacheObject));
+    unawaited(_box.put(hiveCacheObject.key, hiveCacheObject));
     return cacheObject;
   }
 
   @override
-  Future<CacheObject> get(String key) async {
-    return _box.get(_hiveKey(key)) as CacheObject;
+  Future<CacheObject> get(String url) async {
+    return _box.get(_hiveKey(url)) as CacheObject;
   }
 
   @override
@@ -101,7 +101,9 @@ class HiveCacheObjectProvider implements CacheInfoRepository {
 
   @override
   Future close() async {
-    // this is never called
+    // this is usually never called
+    await _box.compact();
+    await _box.close();
   }
 }
 
