@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text(
                               'Operation Average: ${item.opsAvg.prettyTime()}'),
-                          Text('Operation Median: ${item.opsAvg.prettyTime()}')
+                          Text('Operation Median: ${item.opsMedian.prettyTime()}')
                         ]),
                   ),
                 );
