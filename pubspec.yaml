@@ -1,6 +1,6 @@
 name: flutter_cache_manager_hive
 description: flutter_cache_manager implementation for hive.
-version: 0.0.8
+version: 0.0.9
 homepage: https://github.com/vishna/flutter_cache_manager_hive
 
 environment:

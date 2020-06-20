@@ -1,3 +1,7 @@
+## [0.0.9]
+
+* Add example and benchmark apps
+
 ## [0.0.8]
 
 * Drop `HiveCacheStore`
