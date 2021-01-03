@@ -129,7 +129,7 @@ class Fab extends StatelessWidget {
     return FloatingActionButton(
       onPressed: downloadFile,
       tooltip: 'Download',
-      child: Icon(Icons.cloud_download),
+      child: const Icon(Icons.cloud_download),
     );
   }
 }

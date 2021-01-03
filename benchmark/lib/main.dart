@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_cache_manager/src/storage/cache_object_provider.dart';
 import 'package:flutter_cache_manager/src/storage/cache_object.dart';
 import 'package:flutter_cache_manager_hive/flutter_cache_manager_hive.dart';
 import 'package:flutter_cache_manager_hive/src/hive_cache_object_provider.dart';
@@ -117,7 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Text(
                               'Operation Average: ${item.opsAvg.prettyTime()}'),
-                          Text('Operation Median: ${item.opsMedian.prettyTime()}')
+                          Text(
+                              'Operation Median: ${item.opsMedian.prettyTime()}')
                         ]),
                   ),
                 );
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _runBenchmark,
         tooltip: 'Measure',
-        child: Icon(Icons.timer),
+        child: const Icon(Icons.timer),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
@@ -156,11 +156,12 @@ final RepoMaker sqflite = () async {
     await Directory(databasesPath).create(recursive: true);
   } catch (_) {}
   final path = p.join(databasesPath, 'image-cache.db');
-  return CacheObjectProvider(path);
+  return CacheObjectProvider(path: path);
 };
 
 final RepoMaker hive = () async {
-  return HiveCacheObjectProvider(Hive.openBox('image-caching-box'));
+  final repo = HiveCacheObjectProvider(Hive.openBox('image-caching-box'));
+  return Future.value(repo);
 };
 
 Future<void> cleanRepo(RepoMaker r) async {

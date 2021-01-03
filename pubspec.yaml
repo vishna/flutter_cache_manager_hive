@@ -7,16 +7,16 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   clock: ^1.0.1
   file: ^5.1.0
+  flutter:
+    sdk: flutter
   flutter_cache_manager: ^2.1.0
   hive: ^1.4.1+1
   http: "^0.12.0+2"
   meta: ^1.1.8
-  path_provider: "^1.4.0"
   path: "^1.6.4"
+  path_provider: "^1.4.0"
   pedantic: "^1.8.0+1"
   rxdart: '>=0.23.1 <0.25.0'
   uuid:  "^2.0.2"
