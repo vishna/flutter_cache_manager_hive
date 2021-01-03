@@ -1,5 +1,5 @@
 import 'package:clock/clock.dart';
-import 'package:flutter_cache_manager/src/storage/cache_info_repository.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_cache_manager/src/storage/cache_object.dart';
 import 'package:hive/hive.dart';
 import 'package:pedantic/pedantic.dart';
@@ -13,8 +13,9 @@ class HiveCacheObjectProvider implements CacheInfoRepository {
   HiveCacheObjectProvider(this.box);
 
   @override
-  Future open() async {
+  Future<bool> open() async {
     _box = await box;
+    return true;
   }
 
   @override
@@ -23,7 +24,8 @@ class HiveCacheObjectProvider implements CacheInfoRepository {
   }
 
   @override
-  Future<CacheObject> insert(CacheObject cacheObject) async {
+  Future<CacheObject> insert(CacheObject cacheObject,
+      {bool setTouchedToNow = true}) async {
     HiveCacheObject hiveCacheObject;
     if (cacheObject is HiveCacheObject) {
       hiveCacheObject = cacheObject;
@@ -51,12 +53,14 @@ class HiveCacheObjectProvider implements CacheInfoRepository {
   }
 
   @override
-  Future deleteAll(Iterable<int> ids) async {
+  Future<int> deleteAll(Iterable<int> ids) async {
     unawaited(_box.deleteAll(ids.map((id) => id.toString()).toList()));
+    return ids.length;
   }
 
   @override
-  Future<int> update(CacheObject cacheObject) async {
+  Future<int> update(CacheObject cacheObject,
+      {bool setTouchedToNow = true}) async {
     unawaited(updateOrInsert(cacheObject));
     return 1;
   }
@@ -100,12 +104,24 @@ class HiveCacheObjectProvider implements CacheInfoRepository {
   }
 
   @override
-  Future close() async {
+  Future<bool> close() async {
     // this is usually never called
     await _box.compact();
     await _box.close();
+    return true;
+  }
+
+  @override
+  Future<void> deleteDataFile() async {
+    await _box.clear();
+  }
+
+  @override
+  Future<bool> exists() async {
+    return _box.isOpen;
   }
 }
 
 /// All keys have to be ASCII Strings with a max length of 255 chars or unsigned 32 bit integers
+/// TODO: hashCode can change over dart versions, use MD5 instead??
 String _hiveKey(String key) => key.hashCode.toString();

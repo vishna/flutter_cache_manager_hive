@@ -1,4 +1,4 @@
-import 'package:flutter_cache_manager/src/storage/cache_info_repository.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_cache_manager/src/storage/cache_object.dart';
 
 typedef RepoMaker = Future<CacheInfoRepository> Function();
@@ -18,7 +18,7 @@ Future<BenchmarkResult> benchmark(
 
   // perform some operation
   final n = samples.length;
-  final ops = List<int>(n);
+  final ops = List<int>.filled(n, 0);
 
   final s2 = Stopwatch()..start();
   for (var i = 0; i < n; i++) {
